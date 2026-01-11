@@ -6,11 +6,10 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: 'QMK Userspace Build'
+  checkout:
+    name: 'Checkout Sources'
     runs-on: ubuntu-latest
     container: qmkfm/qmk_cli
-
     steps:
       - name: Checkout userspace
         uses: actions/checkout@v4
@@ -23,20 +22,39 @@ jobs:
           path: qmk_firmware
           submodules: recursive
 
+      - name: Cache QMK firmware
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            qmk_firmware
+            .
+          key: qmk-${{ github.sha }}
+
+  build:
+    name: 'Build Firmware'
+    runs-on: ubuntu-latest
+    container: qmkfm/qmk_cli
+    needs: checkout
+    steps:
+      - name: Restore QMK cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            qmk_firmware
+            .
+          key: qmk-${{ github.sha }}
+
       - name: Configure QMK
         run: |
           qmk config user.qmk_home=$GITHUB_WORKSPACE/qmk_firmware
           qmk config user.overlay_dir=$GITHUB_WORKSPACE
 
-      - name: Build firmware (verbose)
+      - name: Build firmware
         run: |
-          set -x
-          echo "=== Building firmware with full output ==="
-          # Try direct compile to see full errors
-          qmk compile -kb lily58/rev1 -km supercoolalan -e CONVERT_TO=blok 2>&1 | tee build_output.txt || true
-          echo "=== Build exit code: $? ==="
-          echo "=== Full build log ==="
-          cat build_output.txt || true
+          set -e
+          echo "=== Building firmware ==="
+          qmk userspace-compile -e CONVERT_TO=blok 2>&1 | tee build_output.txt
+          echo "=== Build completed ==="
 
       - name: Upload build log
         if: always()
@@ -46,7 +64,6 @@ jobs:
           path: build_output.txt
 
       - name: Upload firmware
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Firmware
