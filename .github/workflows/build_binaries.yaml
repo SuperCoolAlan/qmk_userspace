@@ -84,7 +84,40 @@ jobs:
             *.uf2
 
   publish:
-    name: 'QMK Userspace Publish'
-    uses: qmk/.github/.github/workflows/qmk_userspace_publish.yml@main
-    if: always() && !cancelled()
+    name: 'Publish Release'
+    runs-on: ubuntu-latest
     needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download firmware
+        uses: actions/download-artifact@v4
+        with:
+          name: Firmware
+
+      - name: Generate release info
+        id: release_info
+        run: |
+          # Use date + short SHA for version
+          VERSION="v$(date +'%Y.%m.%d')-${GITHUB_SHA::7}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Use commit message for release name
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          # Take first line only
+          RELEASE_NAME=$(echo "$COMMIT_MSG" | head -n1)
+          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.release_info.outputs.version }}
+          name: ${{ steps.release_info.outputs.release_name }}
+          files: |
+            *.uf2
+            *.hex
+            *.bin
+          body: |
+            Firmware build from commit ${{ github.sha }}
+
+            **Files:**
+            - `boardsource_lulu_avr_supercoolalan_blok.uf2` - Flash to both halves via bootloader
