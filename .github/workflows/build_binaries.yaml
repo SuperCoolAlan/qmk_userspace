@@ -30,9 +30,13 @@ jobs:
 
       - name: Build firmware (verbose)
         run: |
+          set -x
           echo "=== Building firmware with full output ==="
-          qmk userspace-compile -e DUMP_CI_METADATA=yes 2>&1 | tee build_output.txt
-          echo "=== Build complete ==="
+          # Try direct compile to see full errors
+          qmk compile -kb lily58/rev1 -km supercoolalan -e CONVERT_TO=blok 2>&1 | tee build_output.txt || true
+          echo "=== Build exit code: $? ==="
+          echo "=== Full build log ==="
+          cat build_output.txt || true
 
       - name: Upload build log
         if: always()
