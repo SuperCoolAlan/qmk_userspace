@@ -3,5 +3,6 @@ CONVERT_TO = blok
 # OLED
 OLED_ENABLE = yes
 
-# RGB Lighting
+# RGB Lighting with 70 LEDs
 RGBLIGHT_ENABLE = yes
+OPT_DEFS += -DRGBLIGHT_LED_COUNT=70
