@@ -47,3 +47,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 layer_state_t layer_state_set_user(layer_state_t state) {
    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
+
+#ifdef OLED_ENABLE
+bool oled_task_user(void) {
+    // Show layer name
+    switch (get_highest_layer(layer_state)) {
+        case _QWERTY:
+            oled_write_ln_P(PSTR("QWERTY"), false);
+            break;
+        case _LOWER:
+            oled_write_ln_P(PSTR("LOWER"), false);
+            break;
+        case _RAISE:
+            oled_write_ln_P(PSTR("RAISE"), false);
+            break;
+        case _ADJUST:
+            oled_write_ln_P(PSTR("ADJUST"), false);
+            break;
+        default:
+            oled_write_ln_P(PSTR("???"), false);
+    }
+    return false;
+}
+#endif
