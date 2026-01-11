@@ -56,6 +56,17 @@ jobs:
           qmk userspace-compile -e CONVERT_TO=blok 2>&1 | tee build_output.txt
           echo "=== Build completed ==="
 
+      - name: Post build summary
+        if: always()
+        run: |
+          echo "## Build Output" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat build_output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Firmware Files" >> $GITHUB_STEP_SUMMARY
+          ls -la *.uf2 *.hex *.bin 2>/dev/null >> $GITHUB_STEP_SUMMARY || echo "No firmware files found" >> $GITHUB_STEP_SUMMARY
+
       - name: Upload build log
         if: always()
         uses: actions/upload-artifact@v4
