@@ -8,10 +8,48 @@ permissions:
 jobs:
   build:
     name: 'QMK Userspace Build'
-    uses: qmk/.github/.github/workflows/qmk_userspace_build.yml@main
-    with:
-      qmk_repo: qmk/qmk_firmware
-      qmk_ref: master
+    runs-on: ubuntu-latest
+    container: qmkfm/qmk_cli
+
+    steps:
+      - name: Checkout userspace
+        uses: actions/checkout@v4
+
+      - name: Checkout QMK firmware
+        uses: actions/checkout@v4
+        with:
+          repository: qmk/qmk_firmware
+          ref: master
+          path: qmk_firmware
+          submodules: recursive
+
+      - name: Configure QMK
+        run: |
+          qmk config user.qmk_home=$GITHUB_WORKSPACE/qmk_firmware
+          qmk config user.overlay_dir=$GITHUB_WORKSPACE
+
+      - name: Build firmware (verbose)
+        run: |
+          echo "=== Building firmware with full output ==="
+          qmk userspace-compile -e DUMP_CI_METADATA=yes 2>&1 | tee build_output.txt
+          echo "=== Build complete ==="
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build_output.txt
+
+      - name: Upload firmware
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Firmware
+          path: |
+            *.bin
+            *.hex
+            *.uf2
 
   publish:
     name: 'QMK Userspace Publish'
