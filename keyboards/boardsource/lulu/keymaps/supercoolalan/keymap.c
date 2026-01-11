@@ -423,7 +423,9 @@ bool oled_task_user(void) {
                 break;
             case _ADJUST:
                 oled_set_cursor(0, 1);
-                oled_write_ln_P(PSTR(" ADJUST"), false);
+                oled_write_ln_P(PSTR("  \\|/"), false);
+                oled_write_ln_P(PSTR("  -*-"), false);
+                oled_write_ln_P(PSTR("  /|\\"), false);
                 break;
             default:
                 // Base layer: show WPM number only
