@@ -406,26 +406,21 @@ bool oled_task_user(void) {
         // Left side: bongo cat
         render_bongocat();
     } else {
-        // Right side: show layer and WPM
-        oled_write_P(PSTR("Layer: "), false);
+        // Right side: mode indicator
+        oled_write_ln_P(PSTR(""), false);
         switch (get_highest_layer(layer_state)) {
-            case _QWERTY:
-                oled_write_ln_P(PSTR("QWERTY"), false);
-                break;
             case _LOWER:
-                oled_write_ln_P(PSTR("LOWER"), false);
+                oled_write_ln_P(PSTR("  LOWER"), false);
                 break;
             case _RAISE:
-                oled_write_ln_P(PSTR("RAISE"), false);
+                oled_write_ln_P(PSTR("  UPPER"), false);
                 break;
             case _ADJUST:
-                oled_write_ln_P(PSTR("ADJUST"), false);
+                oled_write_ln_P(PSTR(" ADJUST"), false);
                 break;
             default:
-                oled_write_ln_P(PSTR("???"), false);
+                oled_write_ln_P(PSTR(""), false);
         }
-        oled_write_P(PSTR("WPM: "), false);
-        oled_write(get_u8_str(get_current_wpm(), ' '), false);
     }
     return false;
 }
