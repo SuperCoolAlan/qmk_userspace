@@ -8,3 +8,4 @@ WPM_ENABLE = yes
 
 # RGB Matrix for per-key LEDs (70 total)
 RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_DRIVER = ws2812
