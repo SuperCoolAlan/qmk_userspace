@@ -70,6 +70,15 @@ RGBLIGHT_ENABLE = yes
 - Using `OPT_DEFS += -DRGBLIGHT_LED_COUNT=70` in rules.mk
 - Old RGB_ keycodes (RGB_TOG, RGB_MOD, etc.)
 
+## OLED Configuration (WORKING)
+- BLOK uses **GP16/GP17** for I2C (not GP22/GP23)
+- Config needed in config.h:
+```c
+#define I2C_DRIVER I2CD0
+#define I2C0_SDA_PIN GP16
+#define I2C0_SCL_PIN GP17
+```
+- Need `oled_task_user()` function in keymap.c to display content after splash
+
 ## TODO
 - Figure out how to increase LED count from 12 to 70
-- Test actual hardware with current firmware
