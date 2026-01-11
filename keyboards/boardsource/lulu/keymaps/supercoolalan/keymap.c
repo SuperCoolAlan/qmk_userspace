@@ -406,31 +406,34 @@ bool oled_task_user(void) {
         // Left side: bongo cat
         render_bongocat();
     } else {
-        // Right side: WPM and layer arrows
-        oled_clear();
+        // Right side: WPM and layer indicator
+        oled_set_cursor(0, 0);
         switch (get_highest_layer(layer_state)) {
             case _LOWER:
-                oled_set_cursor(0, 1);
-                oled_write_ln_P(PSTR(" \\"), false);
-                oled_write_ln_P(PSTR("  \\"), false);
-                oled_write_ln_P(PSTR("   V"), false);
+                oled_write_ln_P(PSTR("     "), false);
+                oled_write_ln_P(PSTR(" LOW "), false);
+                oled_write_ln_P(PSTR("  v  "), false);
+                oled_write_ln_P(PSTR("     "), false);
                 break;
             case _RAISE:
-                oled_set_cursor(0, 1);
-                oled_write_ln_P(PSTR("   ^"), false);
-                oled_write_ln_P(PSTR("  /"), false);
-                oled_write_ln_P(PSTR(" /"), false);
+                oled_write_ln_P(PSTR("     "), false);
+                oled_write_ln_P(PSTR("  ^  "), false);
+                oled_write_ln_P(PSTR(" UP  "), false);
+                oled_write_ln_P(PSTR("     "), false);
                 break;
             case _ADJUST:
-                oled_set_cursor(0, 1);
-                oled_write_ln_P(PSTR("  \\|/"), false);
-                oled_write_ln_P(PSTR("  -*-"), false);
-                oled_write_ln_P(PSTR("  /|\\"), false);
+                oled_write_ln_P(PSTR("     "), false);
+                oled_write_ln_P(PSTR(" ***"), false);
+                oled_write_ln_P(PSTR(" ADJ "), false);
+                oled_write_ln_P(PSTR("     "), false);
                 break;
             default:
-                // Base layer: show WPM number only
-                oled_set_cursor(1, 2);
+                oled_write_ln_P(PSTR("     "), false);
+                oled_write_ln_P(PSTR("     "), false);
+                oled_write_P(PSTR(" "), false);
                 oled_write(get_u8_str(get_current_wpm(), ' '), false);
+                oled_write_ln_P(PSTR(" "), false);
+                oled_write_ln_P(PSTR("     "), false);
                 break;
         }
     }
