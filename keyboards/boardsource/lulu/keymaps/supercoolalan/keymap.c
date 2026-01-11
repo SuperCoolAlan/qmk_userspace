@@ -410,15 +410,15 @@ bool oled_task_user(void) {
         switch (get_highest_layer(layer_state)) {
             case _LOWER:
                 oled_write_ln_P(PSTR(""), false);
-                oled_write_ln_P(PSTR("   \x19"), false);  // Down arrow
+                oled_write_ln_P(PSTR("   \x1A"), false);  // Right arrow (appears as down on rotated display)
                 break;
             case _RAISE:
                 oled_write_ln_P(PSTR(""), false);
-                oled_write_ln_P(PSTR("   \x18"), false);  // Up arrow
+                oled_write_ln_P(PSTR("   \x1B"), false);  // Left arrow (appears as up on rotated display)
                 break;
             case _ADJUST:
                 oled_write_ln_P(PSTR(""), false);
-                oled_write_ln_P(PSTR("  \x18\x19"), false);  // Both arrows
+                oled_write_ln_P(PSTR("  \x1B\x1A"), false);  // Both arrows
                 break;
             default:
                 // Base layer: show WPM
