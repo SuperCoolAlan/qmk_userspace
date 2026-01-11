@@ -406,20 +406,25 @@ bool oled_task_user(void) {
         // Left side: bongo cat
         render_bongocat();
     } else {
-        // Right side: mode indicator
-        oled_write_ln_P(PSTR(""), false);
+        // Right side: WPM and layer arrows
         switch (get_highest_layer(layer_state)) {
             case _LOWER:
-                oled_write_ln_P(PSTR("  LOWER"), false);
+                oled_write_ln_P(PSTR(""), false);
+                oled_write_ln_P(PSTR("   \x19"), false);  // Down arrow
                 break;
             case _RAISE:
-                oled_write_ln_P(PSTR("  UPPER"), false);
+                oled_write_ln_P(PSTR(""), false);
+                oled_write_ln_P(PSTR("   \x18"), false);  // Up arrow
                 break;
             case _ADJUST:
-                oled_write_ln_P(PSTR(" ADJUST"), false);
+                oled_write_ln_P(PSTR(""), false);
+                oled_write_ln_P(PSTR("  \x18\x19"), false);  // Both arrows
                 break;
             default:
-                oled_write_ln_P(PSTR(""), false);
+                // Base layer: show WPM
+                oled_write_P(PSTR("WPM: "), false);
+                oled_write(get_u8_str(get_current_wpm(), ' '), false);
+                break;
         }
     }
     return false;
