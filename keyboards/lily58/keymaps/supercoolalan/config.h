@@ -1,0 +1,18 @@
+#pragma once
+
+// WS2812 RGB LED pin
+#define WS2812_DI_PIN GP29
+
+// RGB Matrix configuration
+#define RGB_MATRIX_LED_COUNT 70
+#define RGB_MATRIX_SPLIT { 35, 35 }
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
+
+// I2C for OLED
+#define I2C_DRIVER I2CD1
+#define I2C1_SDA_PIN GP22
+#define I2C1_SCL_PIN GP23
+
+// OLED configuration
+#define OLED_DISPLAY_128X32
