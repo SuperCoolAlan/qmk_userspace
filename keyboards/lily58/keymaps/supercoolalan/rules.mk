@@ -1,1 +1,4 @@
 CONVERT_TO = blok
+
+# OLED
+OLED_ENABLE = yes
