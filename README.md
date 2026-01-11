@@ -1,5 +1,30 @@
 # QMK Userspace
 
+Custom QMK firmware for Boardsource Lily58 with Blok controllers.
+
+## Features
+
+### Keyboard: Boardsource Lulu/Lily58
+- **70 RGB LEDs** (58 per-key + 12 underglow) with RGB Matrix effects
+- **Reactive splash effects** - keys light up when pressed
+- **Split OLED displays**:
+  - Left: Bongo cat animation (types faster as WPM increases)
+  - Right: WPM counter, layer indicators (LOW/UP/ADJ)
+- **4 Layers**: QWERTY, LOWER, RAISE, ADJUST (LOWER+RAISE)
+- **Blok controller support** (RP2040 with Pro Micro pinout)
+
+### RGB Controls (RAISE layer)
+- `ESC` - Next effect
+- `1` - Previous effect
+- `2/3` - Saturation up/down
+- `4/5` - Brightness up/down
+- `6/7` - Hue up/down
+- `[` - Toggle RGB on/off
+
+---
+
+## QMK Userspace Template
+
 This is a template repository which allows for an external set of QMK keymaps to be defined and compiled. This is useful for users who want to maintain their own keymaps without having to fork the main QMK repository.
 
 ## Howto configure your build targets
