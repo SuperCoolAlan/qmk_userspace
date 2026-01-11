@@ -407,22 +407,29 @@ bool oled_task_user(void) {
         render_bongocat();
     } else {
         // Right side: WPM and layer arrows
+        oled_clear();
         switch (get_highest_layer(layer_state)) {
             case _LOWER:
-                oled_write_ln_P(PSTR(""), false);
-                oled_write_ln_P(PSTR("   \x1A"), false);  // Right arrow (appears as down on rotated display)
+                oled_set_cursor(0, 1);
+                oled_write_ln_P(PSTR(" \\"), false);
+                oled_write_ln_P(PSTR("  \\"), false);
+                oled_write_ln_P(PSTR("   V"), false);
                 break;
             case _RAISE:
-                oled_write_ln_P(PSTR(""), false);
-                oled_write_ln_P(PSTR("   \x1B"), false);  // Left arrow (appears as up on rotated display)
+                oled_set_cursor(0, 1);
+                oled_write_ln_P(PSTR("   ^"), false);
+                oled_write_ln_P(PSTR("  /"), false);
+                oled_write_ln_P(PSTR(" /"), false);
                 break;
             case _ADJUST:
-                oled_write_ln_P(PSTR(""), false);
-                oled_write_ln_P(PSTR("  \x1B\x1A"), false);  // Both arrows
+                oled_set_cursor(0, 1);
+                oled_write_ln_P(PSTR(" ADJUST"), false);
                 break;
             default:
                 // Base layer: show WPM
-                oled_write_P(PSTR("WPM: "), false);
+                oled_set_cursor(0, 1);
+                oled_write_ln_P(PSTR("WPM"), false);
+                oled_set_cursor(0, 3);
                 oled_write(get_u8_str(get_current_wpm(), ' '), false);
                 break;
         }
