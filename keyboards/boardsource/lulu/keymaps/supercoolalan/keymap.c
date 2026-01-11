@@ -426,10 +426,8 @@ bool oled_task_user(void) {
                 oled_write_ln_P(PSTR(" ADJUST"), false);
                 break;
             default:
-                // Base layer: show WPM
-                oled_set_cursor(0, 1);
-                oled_write_ln_P(PSTR("WPM"), false);
-                oled_set_cursor(0, 3);
+                // Base layer: show WPM number only
+                oled_set_cursor(1, 2);
                 oled_write(get_u8_str(get_current_wpm(), ' '), false);
                 break;
         }
